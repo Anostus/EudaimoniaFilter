@@ -47,7 +47,7 @@ MAX_ENTRIES_PER_FEED: int = int(os.getenv("MAX_ENTRIES_PER_FEED", "25"))
 BATCH_SIZE: int = int(os.getenv("BATCH_SIZE", "10"))
 
 # Minimum score (1-10) on ANY single criterion to pass the filter
-SCORE_THRESHOLD: int = int(os.getenv("SCORE_THRESHOLD", "7"))
+SCORE_THRESHOLD: int = int(os.getenv("SCORE_THRESHOLD", "9"))
 
 # Path to a JSON file that tracks already-seen entry IDs across runs,
 # so we don't re-judge articles we've already processed.
