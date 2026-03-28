@@ -38,7 +38,7 @@ jobs:
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           RSS_FEEDS: ${{ vars.RSS_FEEDS || '["https://www.theguardian.com/us-news/rss","https://www.theguardian.com/world/rss","https://www.pbs.org/newshour/feeds/rss/headlines","https://www.propublica.org/feeds/propublica/main"]' }}
-          SCORE_THRESHOLD: ${{ vars.SCORE_THRESHOLD || '7' }}
+          SCORE_THRESHOLD: ${{ vars.SCORE_THRESHOLD || '9' }}
           MAX_ENTRIES_PER_FEED: ${{ vars.MAX_ENTRIES_PER_FEED || '25' }}
           BATCH_SIZE: ${{ vars.BATCH_SIZE || '10' }}
           FEED_RETENTION_DAYS: ${{ vars.FEED_RETENTION_DAYS || '7' }}
