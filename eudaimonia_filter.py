@@ -297,10 +297,25 @@ def judge_articles(entries: list) -> list[tuple[object, dict]]:
 # ---------------------------------------------------------------------------
 
 
+def _extract_scores_from_description(description: str) -> tuple[int, int, int] | None:
+    """Extract embedded Eudaimonia scores from a feed item description."""
+    match = re.search(
+        r"Lasting:\s*(\d+)/10\s*\|\s*Growth:\s*(\d+)/10\s*\|\s*Eudaimonia:\s*(\d+)/10",
+        description or "",
+    )
+    if not match:
+        return None
+    return tuple(int(v) for v in match.groups())
+
+
 def load_existing_feed_entries() -> list[dict]:
     """
     Load entries from the existing output feed so we can merge new results
     with recent previous results (rolling window).
+
+    When the threshold changes, drop retained items whose embedded scores no
+    longer meet the current threshold. This prevents older, previously valid
+    entries from lingering in the feed after the bar is raised.
     """
     path = Path(OUTPUT_FILE)
     if not path.exists():
@@ -318,10 +333,19 @@ def load_existing_feed_entries() -> list[dict]:
             if entry_ts < cutoff:
                 continue
 
+        description = getattr(entry, "summary", "")
+        scores = _extract_scores_from_description(description)
+        if scores and max(scores) < SCORE_THRESHOLD:
+            log.info(
+                "Dropping retained entry below threshold [%d/%d/%d]: %s",
+                scores[0], scores[1], scores[2], getattr(entry, "title", ""),
+            )
+            continue
+
         kept.append({
             "title": getattr(entry, "title", ""),
             "link": getattr(entry, "link", ""),
-            "description": getattr(entry, "summary", ""),
+            "description": description,
             "published": getattr(entry, "published", ""),
             "categories": [t.term for t in getattr(entry, "tags", [])],
         })
