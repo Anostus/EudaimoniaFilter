@@ -3,7 +3,7 @@ name: Eudaimonia Filter
 on:
   schedule:
     # Run 4x daily: 6am, 12pm, 6pm, midnight UTC
-    - cron: "0 0,6,12,18 * * *"
+    - cron: "0 12 * * *"
   workflow_dispatch: # Allow manual triggers
 
 permissions:
