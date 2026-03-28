@@ -1,5 +1,10 @@
 name: Eudaimonia Filter
 
+# Opt in to the Node.js 24 runtime for JavaScript-based GitHub Actions now.
+# This avoids Node.js 20 deprecation warnings and helps catch incompatibilities early.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
     # Run 4x daily: 6am, 12pm, 6pm, midnight UTC
@@ -16,10 +21,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        # v6+ uses the Node.js 24 runtime.
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        # v6+ uses the Node.js 24 runtime.
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: "pip"
